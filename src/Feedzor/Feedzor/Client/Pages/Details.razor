@@ -1,0 +1,28 @@
+﻿@page "/details/{feedId}"
+@using Feedzor.Shared
+@inject HttpClient Http
+
+@if (items == null)
+{
+    <p><em>Loading Feeds...</em></p>
+}
+else
+{
+    @foreach (var item in items)
+    {
+        @item.Title
+        <br />
+    }
+}
+
+@code {
+    [Parameter]
+    public string feedId { get; set; }
+
+    private List<FeedItem> items;
+
+    protected override async Task OnInitializedAsync()
+    {
+        items = await Http.GetFromJsonAsync<List<FeedItem>>($"Feedzor/GetRssById/{feedId}");
+    }
+}
