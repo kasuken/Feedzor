@@ -2,27 +2,90 @@
 @using Feedzor.Shared
 @inject HttpClient Http
 
-@if (items == null)
+@if (model == null)
 {
     <p><em>Loading Feeds...</em></p>
 }
 else
 {
-    @foreach (var item in items)
+    <div class="row mt-3 mb-3 ml-3">
+        <div class="col">
+            <h1>@model.FeedSource.Title</h1>
+            <small>@model.FeedSource.Description</small>
+        </div>
+        <div class="col">
+            <div class="float-right">
+                <div class="btn-group btn-group-toggle">
+                    <label class="btn btn-light active" @onclick="onTitleViewClick">
+                        <input type="radio" name="options" id="option1" checked /> Title
+                    </label>
+                    <label class="btn btn-light active" @onclick="onMagazineViewClick">
+                        <input type="radio" name="options" id="option2" checked /> Magazine
+                    </label>
+                    <label class="btn btn-light active" @onclick="onCardsViewClick">
+                        <input type="radio" name="options" id="option3" checked /> Cards
+                    </label>
+                    <label class="btn btn-light active" @onclick="onArticlesViewClick">
+                        <input type="radio" name="options" id="option4" checked /> Articles
+                    </label>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    @if (ViewType == "Title")
+    {
+        <TitleView Items="@model.Items" />
+    }
+
+    @if (ViewType == "Cards")
+    {
+        <CardView Items="@model.Items" />
+    }
+
+    @if (ViewType == "Magazine")
+    {
+        <span>magazine</span>
+    }
+
+    @if (ViewType == "Articles")
+    {
+        <span>articles</span>
+    }
+
+    @*@foreach (var item in model.Items)
     {
         @item.Title
         <br />
-    }
+    }*@
 }
 
 @code {
     [Parameter]
     public string feedId { get; set; }
 
-    private List<FeedItem> items;
+    private FeedDetailsPageModel model;
+    private string ViewType;
 
     protected override async Task OnInitializedAsync()
     {
-        items = await Http.GetFromJsonAsync<List<FeedItem>>($"Feedzor/GetRssById/{feedId}");
+        model = await Http.GetFromJsonAsync<FeedDetailsPageModel>($"Feedzor/GetRssById/{feedId}");
+    }
+
+    private void onTitleViewClick()
+    {
+        ViewType = "Title";
+    }
+    private void onCardsViewClick()
+    {
+        ViewType = "Cards";
+    }
+    private void onMagazineViewClick()
+    {
+        ViewType = "Magazine";
+    }
+    private void onArticlesViewClick()
+    {
+        ViewType = "Articles";
     }
 }

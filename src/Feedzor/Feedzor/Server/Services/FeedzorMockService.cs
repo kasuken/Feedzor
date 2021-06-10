@@ -8,16 +8,23 @@ namespace Feedzor.Server.Services
 {
     public class FeedzorMockService : IFeedzorService
     {
-        public async Task<List<FeedItem>> LoadFeedItems(string feedId)
+        public async Task<FeedDetailsPageModel> LoadFeedDetails(string feedId)
         {
-            var result = new List<FeedItem>();
+            var items = new List<FeedItem>();
 
             for (int i = 0; i < 50; i++)
             {
-                result.Add(new FeedItem() { Id = i.ToString(), Title = $"Feed Item {i}", Url = "https://www.bing.com" });
+                items.Add(new FeedItem() { Id = i.ToString(), Title = $"Feed Item {i}", Url = "https://www.bing.com" });
             }
 
-            return result;
+            var pageModel = new FeedDetailsPageModel();
+            pageModel.Items = new List<FeedItem>();
+            pageModel.FeedSource = new FeedSource();
+
+            pageModel.Items = items;
+            pageModel.FeedSource = new FeedSource() { Id = Guid.NewGuid(), Title = $"Feed Title", Url = "https://pisachannel.tv/feed/" };
+
+            return pageModel;
         }
 
         public async Task<List<FeedSource>> LoadFeedSources(string email)

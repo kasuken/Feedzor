@@ -25,5 +25,7 @@ namespace Feedzor.Shared
 
         public string Encoded { get; set; }
 
+        public string Image { get; set; }
+
     }
 }

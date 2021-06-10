@@ -1,0 +1,19 @@
+﻿<div class="card-columns">
+    @foreach (var item in Items)
+    {
+        <div class="card rounded">
+            <div class="card-body">
+               <b class="card-title">@item.Title</b>
+               <p class="card-text">@item.Description</p>
+               <p class="card-text">@item.Published.ToString("dd MMM")</p>
+            </div>
+        </div>
+    }
+</div>
+
+@code {
+
+    [Parameter]
+    public List<Feedzor.Shared.FeedItem> Items { get; set; }
+
+}

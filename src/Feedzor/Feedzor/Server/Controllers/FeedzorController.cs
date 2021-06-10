@@ -34,9 +34,9 @@ namespace Feedzor.Server.Controllers
         }
 
         [HttpGet("GetRssById/{feedId}")]
-        public async Task<List<FeedItem>> GetById(Guid feedId)
+        public async Task<FeedDetailsPageModel> GetById(Guid feedId)
         {
-            var result = await _feedzorService.LoadFeedItems(feedId.ToString());
+            var result = await _feedzorService.LoadFeedDetails(feedId.ToString());
 
             return result;
         }

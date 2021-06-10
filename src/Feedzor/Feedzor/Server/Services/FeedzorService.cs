@@ -8,7 +8,7 @@ namespace Feedzor.Server.Services
 {
     public class FeedzorService : IFeedzorService
     {
-        public async Task<List<FeedItem>> LoadFeedItems(string feedId)
+        public Task<FeedDetailsPageModel> LoadFeedDetails(string feedId)
         {
             throw new NotImplementedException();
         }
