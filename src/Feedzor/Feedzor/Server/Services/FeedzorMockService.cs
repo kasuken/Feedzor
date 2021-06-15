@@ -8,6 +8,11 @@ namespace Feedzor.Server.Services
 {
     public class FeedzorMockService : IFeedzorService
     {
+        public Task<List<FeedSource>> AddRss(string email, string url)
+        {
+            throw new NotImplementedException();
+        }
+
         public async Task<FeedDetailsPageModel> LoadFeedDetails(string feedId)
         {
             var items = new List<FeedItem>();

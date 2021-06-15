@@ -13,5 +13,7 @@ namespace Feedzor.Server.Services
 
         Task<FeedDetailsPageModel> LoadFeedDetails(string feedId);
 
+        Task<List<FeedSource>> AddRss(string email, string url);
+
     }
 }

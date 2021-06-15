@@ -45,19 +45,13 @@ else
 
     @if (ViewType == "Magazine")
     {
-        <span>magazine</span>
+        <MagazineView Items="@model.Items" />
     }
 
     @if (ViewType == "Articles")
     {
-        <span>articles</span>
+        <ArticleView Items="@model.Items" />
     }
-
-    @*@foreach (var item in model.Items)
-    {
-        @item.Title
-        <br />
-    }*@
 }
 
 @code {

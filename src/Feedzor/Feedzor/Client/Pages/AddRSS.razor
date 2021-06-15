@@ -1,0 +1,43 @@
+﻿@page "/addrss"
+@using Microsoft.AspNetCore.Authorization
+@using Microsoft.AspNetCore.Components.Authorization
+@inject AuthenticationStateProvider AuthenticationStateProvider
+@using Feedzor.Shared
+@attribute [Authorize]
+@inject HttpClient Http
+
+<h3>Add RSS</h3>
+
+<div class="container">
+
+    <div class="row">
+        <div class="col-lg-10">
+            <div class="input-group mb-2">
+                <input class="form-control" type="url" @bind="FeedUrl" />
+            </div>
+        </div>
+    </div>
+
+    <div class="row">
+        <div class="col-lg-12">
+            <button class="btn btn-primary" @onclick="AddFeed">Add Feed</button>
+        </div>
+    </div>
+
+</div>
+
+@code {
+
+    private string FeedUrl { get; set; }
+
+    public async Task AddFeed()
+    {
+        var authState = await AuthenticationStateProvider.GetAuthenticationStateAsync();
+        var user = authState.User;
+
+        var item = new AddFeed() { Url = FeedUrl };
+
+        await Http.PostAsJsonAsync("Feedzor/AddRss", item);
+    }
+
+}
