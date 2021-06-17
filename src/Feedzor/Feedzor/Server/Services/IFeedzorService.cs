@@ -9,11 +9,11 @@ namespace Feedzor.Server.Services
     public interface IFeedzorService
     {
 
-        Task<List<FeedSource>> LoadFeedSources(string email);
+        Task<List<FeedSource>> LoadFeedSources(string username);
 
         Task<FeedDetailsPageModel> LoadFeedDetails(string feedId);
 
-        Task<List<FeedSource>> AddRss(string email, string url);
+        Task<List<FeedSource>> AddRss(string url, string username);
 
     }
 }

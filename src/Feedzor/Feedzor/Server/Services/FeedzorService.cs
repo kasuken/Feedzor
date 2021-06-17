@@ -8,7 +8,7 @@ namespace Feedzor.Server.Services
 {
     public class FeedzorService : IFeedzorService
     {
-        public Task<List<FeedSource>> AddRss(string email, string url)
+        public Task<List<FeedSource>> AddRss(string url, string username)
         {
             throw new NotImplementedException();
         }
@@ -18,7 +18,7 @@ namespace Feedzor.Server.Services
             throw new NotImplementedException();
         }
 
-        public async Task<List<FeedSource>> LoadFeedSources(string email)
+        public async Task<List<FeedSource>> LoadFeedSources(string username)
         {
             throw new NotImplementedException();
         }

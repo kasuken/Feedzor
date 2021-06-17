@@ -21,22 +21,19 @@ namespace Feedzor.Server.Controllers
     {
         private readonly ILogger<FeedzorController> _logger;
         private readonly IFeedzorService _feedzorService;
-        private UserManager<ApplicationUser> _userManager;
 
-        public FeedzorController(ILogger<FeedzorController> logger, IFeedzorService feedzorService, UserManager<ApplicationUser> userManager)
+        public FeedzorController(ILogger<FeedzorController> logger, IFeedzorService feedzorService)
         {
             _logger = logger;
             _feedzorService = feedzorService;
-            _userManager = userManager;
         }
 
         [HttpGet]
         public async Task<IEnumerable<FeedSource>> Get()
         {
-            var currentUserName = User.FindFirst(ClaimTypes.NameIdentifier).Value;
-            var user = await _userManager.FindByIdAsync(currentUserName);
+            var currentUser = User.Identity?.Name;
 
-            var result = await _feedzorService.LoadFeedSources(user.Email);
+            var result = await _feedzorService.LoadFeedSources(currentUser);
 
             return result;
         }
@@ -52,10 +49,9 @@ namespace Feedzor.Server.Controllers
         [HttpPost("AddRss")]
         public async Task AddRss(AddFeed feed)
         {
-            var currentUserName = User.FindFirst(ClaimTypes.NameIdentifier).Value;
-            var user = await _userManager.FindByIdAsync(currentUserName);
+            var currentUser = User.Identity?.Name;
 
-            await _feedzorService.AddRss(user.Email, feed.Url);
+            await _feedzorService.AddRss(feed.Url, currentUser);
         }
     }
 }
