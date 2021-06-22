@@ -1,14 +1,13 @@
 ﻿using Feedzor.Shared;
 using System;
 using System.Collections.Generic;
-using System.Linq;
 using System.Threading.Tasks;
 
 namespace Feedzor.Server.Services
 {
     public class FeedzorMockService : IFeedzorService
     {
-        public Task<List<FeedSource>> AddRss(string email, string url)
+        public Task<List<FeedSource>> AddRss(string url, string username)
         {
             throw new NotImplementedException();
         }
@@ -32,7 +31,7 @@ namespace Feedzor.Server.Services
             return pageModel;
         }
 
-        public async Task<List<FeedSource>> LoadFeedSources(string email)
+        public async Task<List<FeedSource>> LoadFeedSources(string username)
         {
             var result = new List<FeedSource>();
 
