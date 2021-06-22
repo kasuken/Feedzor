@@ -1,0 +1,42 @@
+﻿@using Microsoft.AspNetCore.Authorization
+@using Microsoft.AspNetCore.Components.WebAssembly.Authentication
+@using Feedzor.Shared
+@inject HttpClient Http
+
+<AuthorizeView>
+    <Authorized>
+        <ul class="nav flex-column">
+            @if (sources == null)
+            {
+            <p><em>Loading Feeds...</em></p>
+            }
+            else
+            {
+                @foreach (var item in sources)
+                {
+                    <li class="nav-item px-3">
+                        <NavLink class="nav-link" href="@($"/details/{item.Id}")">
+                            <span class="oi oi-list-rich" aria-hidden="true"></span> @item.Title
+                        </NavLink>
+                    </li>
+                }
+            }
+        </ul>
+    </Authorized>
+</AuthorizeView>
+
+@code {
+    private FeedSource[] sources;
+
+    protected override async Task OnInitializedAsync()
+    {
+        try
+        {
+            sources = await Http.GetFromJsonAsync<FeedSource[]>("Feedzor");
+        }
+        catch (AccessTokenNotAvailableException exception)
+        {
+            //exception.Redirect();
+        }
+    }
+}

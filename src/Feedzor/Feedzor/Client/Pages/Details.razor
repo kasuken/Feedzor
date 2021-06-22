@@ -2,12 +2,7 @@
 @using Feedzor.Shared
 @inject HttpClient Http
 
-@if (model == null)
-{
-    <p><em>Loading Feeds...</em></p>
-}
-else
-{
+<Loading IsLoading="model is null" LoadingText="Loading Feeds...">
     <div class="row mt-3 mb-3 ml-3">
         <div class="col">
             <h1>@model.FeedSource.Title</h1>
@@ -16,17 +11,17 @@ else
         <div class="col">
             <div class="float-right">
                 <div class="btn-group btn-group-toggle">
-                    <label class="btn btn-light active" @onclick="onTitleViewClick">
-                        <input type="radio" name="options" id="option1" checked /> Title
+                    <label class="btn btn-light @(ViewType == "Title" ? "active" : "")" @onclick="onTitleViewClick">
+                        <input type="radio" name="options" id="option1" /> Title
                     </label>
-                    <label class="btn btn-light active" @onclick="onMagazineViewClick">
-                        <input type="radio" name="options" id="option2" checked /> Magazine
+                    <label class="btn btn-light @(ViewType == "Magazine" ? "active" : "")" @onclick="onMagazineViewClick">
+                        <input type="radio" name="options" id="option2" /> Magazine
                     </label>
-                    <label class="btn btn-light active" @onclick="onCardsViewClick">
-                        <input type="radio" name="options" id="option3" checked /> Cards
+                    <label class="btn btn-light @(ViewType == "Cards" ? "active" : "")" @onclick="onCardsViewClick">
+                        <input type="radio" name="options" id="option3" /> Cards
                     </label>
-                    <label class="btn btn-light active" @onclick="onArticlesViewClick">
-                        <input type="radio" name="options" id="option4" checked /> Articles
+                    <label class="btn btn-light @(ViewType == "Articles" ? "active" : "")" @onclick="onArticlesViewClick">
+                        <input type="radio" name="options" id="option4" /> Articles
                     </label>
                 </div>
             </div>
@@ -52,7 +47,7 @@ else
     {
         <ArticleView Items="@model.Items" />
     }
-}
+</Loading>
 
 @code {
     [Parameter]
@@ -63,6 +58,17 @@ else
 
     protected override async Task OnInitializedAsync()
     {
+        model = await Http.GetFromJsonAsync<FeedDetailsPageModel>($"Feedzor/GetRssById/{feedId}");
+
+        if (string.IsNullOrEmpty(ViewType))
+        {
+            onTitleViewClick();
+        }
+    }
+
+    protected override async Task OnParametersSetAsync()
+    {
+        model = null;
         model = await Http.GetFromJsonAsync<FeedDetailsPageModel>($"Feedzor/GetRssById/{feedId}");
     }
 
