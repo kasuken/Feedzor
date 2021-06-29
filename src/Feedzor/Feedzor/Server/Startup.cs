@@ -45,7 +45,8 @@ namespace Feedzor.Server
             services.AddAuthentication()
                 .AddIdentityServerJwt();
 
-            services.AddTransient<IFeedzorService, FeedzorMockService>();
+            //services.AddTransient<IFeedzorService, FeedzorMockService>();
+            services.AddTransient<IFeedzorService, FeedzorService>();
 
             services.AddControllersWithViews();
             services.AddRazorPages();

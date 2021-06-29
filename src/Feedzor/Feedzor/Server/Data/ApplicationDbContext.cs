@@ -1,4 +1,5 @@
 ﻿using Feedzor.Server.Models;
+using Feedzor.Shared;
 using IdentityServer4.EntityFramework.Options;
 using Microsoft.AspNetCore.ApiAuthorization.IdentityServer;
 using Microsoft.EntityFrameworkCore;
@@ -17,5 +18,9 @@ namespace Feedzor.Server.Data
             IOptions<OperationalStoreOptions> operationalStoreOptions) : base(options, operationalStoreOptions)
         {
         }
+
+        public DbSet<FeedSource> FeedSources { get; set; }
+
+        public DbSet<FeedItem> FeedItems { get; set; }
     }
 }

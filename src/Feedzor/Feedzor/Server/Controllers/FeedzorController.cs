@@ -41,7 +41,6 @@ namespace Feedzor.Server.Controllers
         [HttpGet("GetRssById/{feedId}")]
         public async Task<FeedDetailsPageModel> GetById(Guid feedId)
         {
-            await Task.Delay(2000);
             var result = await _feedzorService.LoadFeedDetails(feedId.ToString());
 
             return result;
