@@ -6,6 +6,7 @@ using System.Linq;
 using System.ServiceModel.Syndication;
 using System.Threading.Tasks;
 using System.Xml;
+using System.Xml.Linq;
 
 namespace Feedzor.Server.Services
 {
@@ -43,7 +44,27 @@ namespace Feedzor.Server.Services
 
             foreach (var item in feed.Items)
             {
-                model.Items.Add(new FeedItem() { Title = item.Title.Text, Description = item.Summary?.Text });
+                var newItem = new FeedItem() { Title = item.Title.Text, Description = item.Summary?.Text };
+
+                model.Items.Add(newItem);
+
+                foreach (SyndicationElementExtension extension in item.ElementExtensions)
+                {
+                    XElement element = extension.GetObject<XElement>();
+
+                    if (element.HasAttributes)
+                    {
+                        foreach (var attribute in element.Attributes())
+                        {
+                            string value = attribute.Value.ToLower();
+                            if (value.StartsWith("http://") && (value.EndsWith(".jpg") || value.EndsWith(".png") || value.EndsWith(".gif")))
+                            {
+                                newItem.Image = value; // Add here the image link to some array
+                            }
+                        }
+                    }
+                }
+
             }
 
             return model;
