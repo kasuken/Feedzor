@@ -28,7 +28,7 @@
                         </div>}
                     <div class="mt-3">
                         @*<HtmlView Content="@item.Content"></HtmlView>*@
-                        @item.Description
+                        @((MarkupString)item.Description)
                     </div>
                 </div>
                 <div class="ml-3 mr-3 mb-3">

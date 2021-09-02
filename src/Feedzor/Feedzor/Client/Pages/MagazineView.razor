@@ -10,7 +10,7 @@
         <div class="col-md-8">
             <div class="mb-2"><b>@item.Title</b></div>
             <div class="mb-2 text-muted">@item.Published.ToString("dd MMM")</div>
-            <div class="mb-2 text-muted">@item.Description</div>
+            <div class="mb-2 text-muted">@((MarkupString)item.Description)</div>
         </div>
         <div class="col-md-2">
 

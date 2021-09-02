@@ -12,7 +12,7 @@ namespace Feedzor.Server.Services
             throw new NotImplementedException();
         }
 
-        public async Task<FeedDetailsPageModel> LoadFeedDetails(string feedId)
+        public async Task<FeedDetailsPageModel> LoadFeedDetails(string feedId, string username)
         {
             var items = new List<FeedItem>();
 
@@ -42,5 +42,10 @@ namespace Feedzor.Server.Services
 
             return result;
         }
-    }
+
+		public Task MarkAsReadAll(string feedId, string username)
+		{
+			throw new NotImplementedException();
+		}
+	}
 }

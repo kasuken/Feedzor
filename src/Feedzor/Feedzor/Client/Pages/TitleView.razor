@@ -7,7 +7,9 @@
     </div>
     <div class="row">
         <div class="col-sm-11">
-            <small><b>@item.Title</b> @item.Description</small>
+            <small><b>@item.Title</b> 
+                @((MarkupString)item.Description)
+            </small>
         </div>
         <div class="col-sm-1">
             <small>@item.Published.ToString("dd MMM")</small>

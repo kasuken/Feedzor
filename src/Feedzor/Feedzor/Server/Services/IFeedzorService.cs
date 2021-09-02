@@ -11,7 +11,9 @@ namespace Feedzor.Server.Services
 
         Task<List<FeedSource>> LoadFeedSources(string username);
 
-        Task<FeedDetailsPageModel> LoadFeedDetails(string feedId);
+        Task<FeedDetailsPageModel> LoadFeedDetails(string feedId, string username);
+
+        Task MarkAsReadAll(string feedId, string username);
 
         Task<List<FeedSource>> AddRss(string url, string username);
 

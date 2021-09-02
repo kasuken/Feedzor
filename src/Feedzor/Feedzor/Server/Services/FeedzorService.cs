@@ -24,18 +24,34 @@ namespace Feedzor.Server.Services
             using var reader = XmlReader.Create(url);
             var feed = SyndicationFeed.Load(reader);
 
-            _applicationDbContext.FeedSources.Add(new FeedSource() { Title = feed.Title.Text, UserName = username, Url = url }) ;
+            _applicationDbContext.FeedSources.Add(new FeedSource() { Title = feed.Title.Text, UserName = username, Url = url });
             await _applicationDbContext.SaveChangesAsync();
 
-            return _applicationDbContext.FeedSources.Where(u=> u.UserName == username).ToList();
+            return _applicationDbContext.FeedSources.Where(u => u.UserName == username).ToList();
         }
 
-        public async Task<FeedDetailsPageModel> LoadFeedDetails(string feedId)
+        public async Task MarkAsReadAll(string feedId, string username)
+        {
+            var source = _applicationDbContext.FeedSources.Where(s => s.Id == Guid.Parse(feedId)).FirstOrDefault();
+
+            using var reader = XmlReader.Create(source.Url);
+            var feed = SyndicationFeed.Load(reader);
+
+            foreach (var item in feed.Items)
+			{
+                _applicationDbContext.FeedItemReadUsers.Add(new FeedItemReadUser() { ItemId = item.Id, UserName = username});
+            }
+
+            _applicationDbContext.SaveChanges();
+        }
+
+        public async Task<FeedDetailsPageModel> LoadFeedDetails(string feedId, string username)
         {
             var model = new FeedDetailsPageModel();
             model.Items = new List<FeedItem>();
 
             var source = _applicationDbContext.FeedSources.Where(s => s.Id == Guid.Parse(feedId)).FirstOrDefault();
+            var readItems = _applicationDbContext.FeedItemReadUsers.Where(u => u.UserName == username).ToList();
 
             model.FeedSource = source;
 
@@ -44,27 +60,12 @@ namespace Feedzor.Server.Services
 
             foreach (var item in feed.Items)
             {
-                var newItem = new FeedItem() { Title = item.Title.Text, Description = item.Summary?.Text };
+                if (readItems.FirstOrDefault(i => i.ItemId == item.Id && i.UserName == username) == null)
+				{
+                    var newItem = new FeedItem() { Id = item.Id, Title = item.Title.Text, Description = item.Summary?.Text };
 
-                model.Items.Add(newItem);
-
-                foreach (SyndicationElementExtension extension in item.ElementExtensions)
-                {
-                    XElement element = extension.GetObject<XElement>();
-
-                    if (element.HasAttributes)
-                    {
-                        foreach (var attribute in element.Attributes())
-                        {
-                            string value = attribute.Value.ToLower();
-                            if (value.StartsWith("http://") && (value.EndsWith(".jpg") || value.EndsWith(".png") || value.EndsWith(".gif")))
-                            {
-                                newItem.Image = value; // Add here the image link to some array
-                            }
-                        }
-                    }
+                    model.Items.Add(newItem);
                 }
-
             }
 
             return model;

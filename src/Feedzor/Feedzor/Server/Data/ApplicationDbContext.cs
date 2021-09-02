@@ -22,5 +22,7 @@ namespace Feedzor.Server.Data
         public DbSet<FeedSource> FeedSources { get; set; }
 
         public DbSet<FeedItem> FeedItems { get; set; }
+
+        public DbSet<FeedItemReadUser> FeedItemReadUsers { get; set; }
     }
 }

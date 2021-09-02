@@ -41,9 +41,17 @@ namespace Feedzor.Server.Controllers
         [HttpGet("GetRssById/{feedId}")]
         public async Task<FeedDetailsPageModel> GetById(Guid feedId)
         {
-            var result = await _feedzorService.LoadFeedDetails(feedId.ToString());
+            var currentUser = User.Identity?.Name;
+            var result = await _feedzorService.LoadFeedDetails(feedId.ToString(), currentUser);
 
             return result;
+        }
+
+        [HttpGet("MarkAsReadAll/{feedId}")]
+        public async Task MarkAsReadAll(Guid feedId)
+        {
+            var currentUser = User.Identity?.Name;
+            await _feedzorService.MarkAsReadAll(feedId.ToString(), currentUser);
         }
 
         [HttpPost("AddRss")]
