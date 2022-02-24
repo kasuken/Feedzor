@@ -2,6 +2,8 @@
 @using Feedzor.Shared
 @inject HttpClient Http
 
+@inject IFeedzorService IFeedzorService
+
 <Loading IsLoading="model is null" LoadingText="Loading Feeds...">
     <div class="row mt-3 mb-3 ml-3">
         <div class="col">
@@ -61,7 +63,7 @@
 
     protected override async Task OnInitializedAsync()
     {
-        model = await Http.GetFromJsonAsync<FeedDetailsPageModel>($"Feedzor/GetRssById/{feedId}");
+        model = await IFeedzorService.GetRssById(feedId);
 
         if (string.IsNullOrEmpty(ViewType))
         {
@@ -72,7 +74,7 @@
     protected override async Task OnParametersSetAsync()
     {
         model = null;
-        model = await Http.GetFromJsonAsync<FeedDetailsPageModel>($"Feedzor/GetRssById/{feedId}");
+        model = await IFeedzorService.GetRssById(feedId);
     }
 
     private async Task onMarkAllAsRead()

@@ -1,3 +1,4 @@
+using Feedzor.Client.Services;
 using Microsoft.AspNetCore.Components.WebAssembly.Authentication;
 using Microsoft.AspNetCore.Components.WebAssembly.Hosting;
 using Microsoft.Extensions.Configuration;
@@ -21,8 +22,9 @@ namespace Feedzor.Client
             builder.Services.AddHttpClient("Feedzor.ServerAPI", client => client.BaseAddress = new Uri(builder.HostEnvironment.BaseAddress))
                 .AddHttpMessageHandler<BaseAddressAuthorizationMessageHandler>();
 
-            // Supply HttpClient instances that include access tokens when making requests to the server project
             builder.Services.AddScoped(sp => sp.GetRequiredService<IHttpClientFactory>().CreateClient("Feedzor.ServerAPI"));
+
+            builder.Services.AddScoped<IFeedzorService, FeedzorService>();
 
             builder.Services.AddApiAuthorization();
 
