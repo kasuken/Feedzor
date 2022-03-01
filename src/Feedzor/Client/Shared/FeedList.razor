@@ -5,23 +5,21 @@
 
 <AuthorizeView>
     <Authorized>
-        <ul class="nav flex-column">
-            @if (sources == null)
+
+        @if (sources == null)
+        {
+            <MudSkeleton />
+            <MudSkeleton Animation="Animation.False" />
+            <MudSkeleton Animation="Animation.Wave" />
+        }
+
+        @if (sources != null)
+        {
+            @foreach (var item in sources)
             {
-            <p><em>Loading Feeds...</em></p>
+                <MudNavLink Href="@($"/details/{item.Id}")" Match="NavLinkMatch.Prefix">@item.Title</MudNavLink>
             }
-            else
-            {
-                @foreach (var item in sources)
-                {
-                    <li class="nav-item px-3">
-                        <NavLink class="nav-link" href="@($"/details/{item.Id}")">
-                            <span class="oi oi-list-rich" aria-hidden="true"></span> @item.Title
-                        </NavLink>
-                    </li>
-                }
-            }
-        </ul>
+        }
     </Authorized>
 </AuthorizeView>
 

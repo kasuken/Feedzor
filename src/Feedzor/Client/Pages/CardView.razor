@@ -1,15 +1,27 @@
-﻿<div class="card-columns">
-    @foreach (var item in Items)
-    {
-        <div class="card rounded">
-            <div class="card-body">
-               <b class="card-title">@item.Title</b>
-               <p class="card-text">@((MarkupString)item.Description)</p>
-               <p class="card-text">@item.Published.ToString("dd MMM")</p>
-            </div>
-        </div>
-    }
-</div>
+﻿<MudGrid>
+
+    <MudGrid Justify=Justify.Center>
+
+        @foreach (var item in Items)
+        {
+            <MudItem xs=4>
+                <MudCard>
+                    @*<MudCardMedia Image="images/door.jpg" Height="200" />*@
+                    <MudCardContent>
+                        <MudText Typo="Typo.h5">@item.Title</MudText>
+                        <MudText Typo="Typo.body2">@((MarkupString)item.Description)</MudText>
+                        <MudText Typo="Typo.subtitle2">@item.Published.ToString("dd MMM")</MudText>
+                    </MudCardContent>
+                    <MudCardActions>
+                        <MudButton Variant="Variant.Text" Color="Color.Primary">Visit website</MudButton>
+                    </MudCardActions>
+                </MudCard>
+            </MudItem>
+        }
+
+    </MudGrid>
+
+</MudGrid>
 
 @code {
 

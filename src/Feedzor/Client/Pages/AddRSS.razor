@@ -6,28 +6,30 @@
 @attribute [Authorize]
 @inject HttpClient Http
 
-<h3>Add RSS</h3>
 
-<div class="container">
+@using System.Text.RegularExpressions
+@using System.ComponentModel.DataAnnotations
 
-    <div class="row">
-        <div class="col-lg-10">
-            <div class="input-group mb-2">
-                <input class="form-control" type="url" @bind="FeedUrl" />
-            </div>
-        </div>
-    </div>
+<MudGrid>
+    <MudItem xs="12" sm="12">
+        <MudPaper Class="pa-4">
+            <MudForm @ref="form" @bind-IsValid="@success" @bind-Errors="@errors">
+                    <MudTextField T="string" Label="Title" Required="true" RequiredError="Title is required!"/>
+                    <MudTextField T="string" Label="RSS url" @bind-Text=FeedUrl Required="true" RequiredError="RSS url is required!" />
+            </MudForm>   
+            <MudButton Variant="Variant.Filled" Color="Color.Primary" DisableElevation="true" OnClick="@(()=>AddFeed())">Add</MudButton>
+            <MudButton Variant="Variant.Filled" Color="Color.Secondary" DisableElevation="true" OnClick="@(()=>form.Reset())" Class="mx-2">Reset</MudButton>
+        </MudPaper>
+    </MudItem>
+</MudGrid>
 
-    <div class="row">
-        <div class="col-lg-12">
-            <button class="btn btn-primary" @onclick="AddFeed">Add Feed</button>
-        </div>
-    </div>
-
-</div>
 
 @code {
+    bool success;
+    string[] errors = { };
+    MudForm form;
 
+    
     private string FeedUrl { get; set; }
 
     public async Task AddFeed()
@@ -39,5 +41,4 @@
 
         await Http.PostAsJsonAsync("Feedzor/AddRss", item);
     }
-
 }
